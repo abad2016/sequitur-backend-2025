@@ -1,8 +1,13 @@
 package com.sequitur.api.configuration;
 
+import com.google.auth.oauth2.GoogleCredentials;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
+
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,7 +18,8 @@ public class OpenApiConfiguration {
         return new OpenAPI()
                 .components(new Components())
                 .info(new Info()
-                        .title("Sequitur Application API")
-                        .description("Sequitur API implemented with Spring Boot RESTful service and documented using springdoc-openapi and OpenAPI 3.0"));
+                        .title("API")
+                        .description("OpenAPI 3.0"))
+                .servers(List.of(new Server().url("https://back-sequitur-production.up.railway.app")));         
     }
 }
