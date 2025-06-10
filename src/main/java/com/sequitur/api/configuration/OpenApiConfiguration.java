@@ -20,6 +20,6 @@ public class OpenApiConfiguration {
                 .info(new Info()
                         .title("API")
                         .description("OpenAPI 3.0"))
-                .servers(List.of(new Server().url("https://back-sequitur-production.up.railway.app")));         
+                .servers(List.of(new Server().url("https://sequitur-backend-2025-production.up.railway.app")));         
     }
 }
