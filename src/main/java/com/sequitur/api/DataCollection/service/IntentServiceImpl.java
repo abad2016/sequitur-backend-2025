@@ -21,10 +21,12 @@ public class IntentServiceImpl implements IntentService {
 
     @Autowired
     private IntentRepository intentRepository;
+    @Autowired
+    private IntentsClient intentsClient;
 
     @Override
     public ResponseEntity<?> deleteIntent(UUID intentUuid) {
-        try (IntentsClient intentsClient = IntentsClient.create()) {
+        try {
             String intentName = "projects/sequitur-yqvh/locations/global/agent/intents/" + intentUuid.toString();
 
             // Create the DeleteIntentRequest object.
@@ -47,7 +49,7 @@ public class IntentServiceImpl implements IntentService {
 
     @Override
     public Intent updateIntent(UUID intentUuid, Intent intentRequest) {
-        try (IntentsClient intentsClient = IntentsClient.create()) {
+        try {
             // Find the intent in Dialogflow by its UUID.
             IntentName intentName = IntentName.ofProjectLocationIntentName("sequitur-yqvh", "global", intentUuid.toString());
             com.google.cloud.dialogflow.v2.Intent existingIntent = intentsClient.getIntent(intentName);
@@ -83,15 +85,9 @@ public class IntentServiceImpl implements IntentService {
         }
     }
 
-    public static byte[] toByteArray(UUID uuid) {
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES * 2);
-        buffer.putLong(uuid.getMostSignificantBits());
-        buffer.putLong(uuid.getLeastSignificantBits());
-        return buffer.array();
-    }
     @Override
     public Intent createIntent(Intent intent) {
-        try (IntentsClient intentsClient = IntentsClient.create()) {
+        try {
             // Convert the provided intent object to a Dialogflow intent object.
             com.google.cloud.dialogflow.v2.Intent dialogflowIntent = com.google.cloud.dialogflow.v2.Intent.newBuilder()
                     .setDisplayName(intent.getDisplayName())
@@ -131,12 +127,19 @@ public class IntentServiceImpl implements IntentService {
         Long mostSignificantBits = Long.parseLong(parts[0], 16);
         Long leastSignificantBits = Long.parseLong(parts[1], 16);
         Long id = new UUID(mostSignificantBits, leastSignificantBits).getMostSignificantBits();
-        Intent intent = intentRepository.findById(intentId).orElseThrow(() -> new ResourceNotFoundException("Intent", "Id", intentId));
-        return intent;
+
+        return intentRepository.findById(intentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Intent", "Id", intentId));
     }
 
     @Override
     public Page<Intent> getAllIntents(Pageable pageable) {
         return intentRepository.findAll(pageable);
+    }
+    public static byte[] toByteArray(UUID uuid) {
+        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES * 2);
+        buffer.putLong(uuid.getMostSignificantBits());
+        buffer.putLong(uuid.getLeastSignificantBits());
+        return buffer.array();
     }
 }
