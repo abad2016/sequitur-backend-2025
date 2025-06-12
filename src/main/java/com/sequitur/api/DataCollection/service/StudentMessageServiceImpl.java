@@ -51,6 +51,10 @@ public class StudentMessageServiceImpl implements StudentMessageService {
     @Autowired
     private PsychologistRepository psychologistRepository;
 
+    @Autowired
+    private SessionsClient sessionsClient;
+
+
     @Override
     public ResponseEntity<?> deleteStudentMessage(Long studentMessageId, Long conversationId) {
         StudentMessage studentMessage = studentMessageRepository.findById(studentMessageId)
@@ -80,7 +84,7 @@ public class StudentMessageServiceImpl implements StudentMessageService {
         String sessionId = conversationId.toString();
         String languageCode = "es";
         String text = studentMessage.getMessage();
-        try (SessionsClient sessionsClient = SessionsClient.create()){
+        try {
             SessionName session = SessionName.of(projectId, sessionId);
             TextInput.Builder textInput = TextInput.newBuilder().setText(text).setLanguageCode(languageCode);
             QueryInput queryInput = QueryInput.newBuilder().setText(textInput).build();
