@@ -35,6 +35,9 @@ public class ResponseServiceImpl implements ResponseService {
     @Autowired
     private IntentRepository intentRepository;
 
+    @Autowired
+    private IntentsClient intentsClient;
+
     @Override
     public ResponseEntity<?> deleteResponse(String responseId, UUID intentId) {
         Optional<Response> optionalResponse = responseRepository.findById(responseId);
@@ -54,7 +57,7 @@ public class ResponseServiceImpl implements ResponseService {
         // Delete the response from your local database.
         responseRepository.delete(response);
 
-        try (IntentsClient intentsClient = IntentsClient.create()) {
+        try {
             String intentName = "projects/sequitur-yqvh/locations/global/agent/intents/" + intentId.toString();
 
             // Retrieve the existing list of responses for the intent.
@@ -86,7 +89,7 @@ public class ResponseServiceImpl implements ResponseService {
 
     @Override
     public Response updateResponse(String responseId,UUID intentId, Response responseRequest) {
-        try (IntentsClient intentsClient = IntentsClient.create()) {
+        try {
             // Get the corresponding intent from your local database.
             Optional<Intent> optionalIntent = intentRepository.findById(intentId);
             if (!optionalIntent.isPresent()) {
@@ -150,7 +153,7 @@ public class ResponseServiceImpl implements ResponseService {
 
     @Override
     public Response createResponse(UUID intentId, Response response) {
-        try (IntentsClient intentsClient = IntentsClient.create()) {
+        try {
             // Get the corresponding intent from your local database.
             Optional<Intent> optionalIntent = intentRepository.findById(intentId);
             if (!optionalIntent.isPresent()) {

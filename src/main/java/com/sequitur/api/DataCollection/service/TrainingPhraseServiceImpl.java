@@ -35,9 +35,12 @@ public class TrainingPhraseServiceImpl implements TrainingPhraseService {
     @Autowired
     private IntentRepository intentRepository;
 
+    @Autowired
+    private IntentsClient intentsClient;
+
     @Override
     public ResponseEntity<?> deleteTrainingPhrase(String trainingPhraseId, UUID intentId) {
-        try (IntentsClient intentsClient = IntentsClient.create()) {
+        try {
             // Get the corresponding intent from your local database.
             Optional<Intent> optionalIntent = intentRepository.findById(intentId);
             if (!optionalIntent.isPresent()) {
@@ -107,7 +110,7 @@ public class TrainingPhraseServiceImpl implements TrainingPhraseService {
 
     @Override
     public TrainingPhrase updateTrainingPhrase(String trainingPhraseId, UUID intentId, TrainingPhrase trainingPhraseRequest) {
-        try (IntentsClient intentsClient = IntentsClient.create()) {
+        try {
             // Get the corresponding intent from your local database.
             Optional<Intent> optionalIntent = intentRepository.findById(intentId);
             if (!optionalIntent.isPresent()) {
@@ -184,7 +187,7 @@ public class TrainingPhraseServiceImpl implements TrainingPhraseService {
 
     @Override
     public TrainingPhrase createTrainingPhrase(UUID intentId, TrainingPhrase trainingPhrase) {
-        try (IntentsClient intentsClient = IntentsClient.create()) {
+        try {
             // Get the corresponding intent from your local database.
             Optional<Intent> optionalIntent = intentRepository.findById(intentId);
             if (!optionalIntent.isPresent()) {
