@@ -54,6 +54,8 @@ public class BinnacleServiceImpl implements BinnacleService {
 
     @Override
     public Binnacle getByStudentId(Long studentId) {
-        return binnacleRepository.findByStudentId(studentId);
+        return binnacleRepository.findByStudentId(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Binnacle not found for studentId " + studentId));
     }
+
 }
