@@ -24,7 +24,8 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public Conversation getConversationByStudentId(Long studentId) {
-        return conversationRepository.findByStudentId(studentId);
+        return conversationRepository.findByStudentId(studentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Conversation not found for studentId " + studentId));
     }
 
     @Override

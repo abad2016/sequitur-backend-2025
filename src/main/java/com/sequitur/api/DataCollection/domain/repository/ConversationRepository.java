@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
-    Conversation findByStudentId(Long studentId);
+    Optional<Conversation> findByStudentId(Long studentId);
     Optional<Conversation> findByIdAndStudentId(Long id, Long studentId);
 }
