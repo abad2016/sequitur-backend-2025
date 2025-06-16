@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,13 @@ public class AppointmentController {
 
     @Autowired
     private AppointmentService appointmentService;
+
+    @PostConstruct
+    public void configureMapper() {
+        mapper.typeMap(Appointment.class, AppointmentResource.class).addMappings(mapper -> {
+            mapper.map(src -> src.getPsychologist().getId(), AppointmentResource::setPsychologistId);
+        });
+    }
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "All Appointments returned", content = @Content(mediaType = "application/json"))

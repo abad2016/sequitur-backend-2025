@@ -19,4 +19,6 @@ public class AppointmentResource {
     private String reason;
 
     private boolean accepted;
+
+    private Long psychologistId;
 }
