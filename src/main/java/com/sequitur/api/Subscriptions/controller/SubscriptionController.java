@@ -91,7 +91,7 @@ public class SubscriptionController {
             return ResponseEntity.badRequest().body("Invalid subscription ID");
         }
 
-        Stripe.apiKey = "sk_test_51Mnr5BCaixXEExr04hcKsVtTKSdGU7i4cO5zwnmXSMZyaPnSxBjCWh7RATWQFw7FKenQE71kvKrrjXzHaaZURmeb00I4OHSveL";
+        Stripe.apiKey = "sk_test_51SStJc07JICd7YilsEHcUTWPdaO4ZJW2hAmPLtQgCj4CBAnSUEBvLQzRRbN4NrAOLzsdiZm6Y1CzWA1rKKwr3PYe00WFvHQnXB";
 
         // Create a Customer object with Stripe.
         CustomerCreateParams customerCreateParams = new CustomerCreateParams.Builder()
